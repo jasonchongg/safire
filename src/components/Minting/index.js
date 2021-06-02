@@ -2,9 +2,14 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { colors, FlexRow } from '../../styles';
 import { CreateNFT } from '../CreateNFT';
+import Footer from '../shared/Footer';
 
 const Minting = () => {
-  return <CreateNFT />;
+  return (
+    <>
+      <CreateNFT />
+    </>
+  );
 };
 /*
 <MintingContainer>

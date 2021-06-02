@@ -7,6 +7,7 @@ import { sleep } from '../../utils/utils';
 
 import styled from 'styled-components/macro';
 import { colors, FlexRow } from '../../styles';
+import Footer from '../shared/Footer';
 //import NFTS from '../HomePage/NFTS';
 // import { listMarket } from '../utils/send';
 // import { CustomMarketInfo, MarketInfo } from '../utils/types';
@@ -220,6 +221,7 @@ export const CreateNFT = () => {
           )}
         </div>
       </form>
+      <Footer />
     </MintingContainer>
   );
 };

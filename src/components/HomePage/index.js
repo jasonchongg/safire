@@ -4,6 +4,7 @@ import { colors, FlexRow } from '../../styles';
 import NFTS from './NFTS';
 
 import Card from './Card';
+import Footer from '../shared/Footer';
 
 const HomePage = () => {
   const nftRows = [];
@@ -40,6 +41,7 @@ const HomePage = () => {
           ))}
         </FlexRow>
       ))}
+      <Footer />
     </HomeContainer>
   );
 };
