@@ -1,32 +1,47 @@
-import { HashRouter, Route, Switch } from "react-router-dom";
-import React from "react";
-import { WalletProvider } from "./contexts/wallet";
-import { ConnectionProvider } from "./contexts/connection";
-import { AccountsProvider } from "./contexts/accounts";
-import { MarketProvider } from "./contexts/market";
-import { AppLayout } from "./components/Layout";
+import {
+  BrowserRouter,
+  HashRouter,
+  Route,
+  Router,
+  Switch,
+} from 'react-router-dom';
+import React from 'react';
+import { WalletProvider } from './contexts/wallet';
+import { ConnectionProvider } from './contexts/connection';
+import { AccountsProvider } from './contexts/accounts';
+import { MarketProvider } from './contexts/market';
+import { AppLayout } from './components/Layout';
 
-import { FaucetView, HomeView } from "./views";
+import HomePage from './components/HomePage';
+import Listing from './components/Listing';
+import Minting from './components/Minting';
+import Faq from './components/Faq';
+
+import Navbar from './components/shared/NavBar';
+import Footer from './components/shared/Footer';
+import PageWrapper from './components/shared/PageWrapper';
 
 export function Routes() {
   return (
     <>
-      <HashRouter basename={"/"}>
+      <BrowserRouter>
         <ConnectionProvider>
           <WalletProvider>
-              <AccountsProvider>
-                <MarketProvider>
-                  <AppLayout>
-                    <Switch>
-                      <Route exact path="/" component={() => <HomeView />} />
-                      <Route exact path="/faucet" children={<FaucetView />} />
-                    </Switch>
-                  </AppLayout>
-                  </MarketProvider>
-              </AccountsProvider>
+            <AccountsProvider>
+              <MarketProvider>
+                <AppLayout>
+                  <Switch>
+                    <Route exact path='/' children={HomePage} />
+                    <Route path='/faq' children={Faq} />
+                    <Route path='/listing/:id' children={Listing} />
+                    <Route path='/minting' children={Minting} />
+                  </Switch>
+                </AppLayout>
+              </MarketProvider>
+            </AccountsProvider>
           </WalletProvider>
         </ConnectionProvider>
-      </HashRouter>
+      </BrowserRouter>
     </>
   );
 }

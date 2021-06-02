@@ -1,8 +1,8 @@
-import { Button, Dropdown, Menu } from "antd";
-import { ButtonProps } from "antd/lib/button";
-import React from "react";
-import { LABELS } from "../../constants";
-import { useWallet } from "../../contexts/wallet";
+import { Button, Dropdown, Menu } from 'antd';
+import { ButtonProps } from 'antd/lib/button';
+import React from 'react';
+import { LABELS } from '../../constants';
+import { useWallet } from '../../contexts/wallet';
 
 export interface ConnectButtonProps
   extends ButtonProps,
@@ -18,7 +18,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
 
   const menu = (
     <Menu>
-      <Menu.Item key="3" onClick={select}>
+      <Menu.Item key='3' onClick={select}>
         Change Wallet
       </Menu.Item>
     </Menu>
@@ -31,7 +31,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
         onClick={connected ? onClick : connect}
         disabled={connected && disabled}
       >
-        {connected ? props.children : LABELS.CONNECT_LABEL}
+        {connected ? 'Disconnect' : LABELS.CONNECT_LABEL}
       </Button>
     );
   }
@@ -42,7 +42,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
       disabled={connected && disabled}
       overlay={menu}
     >
-      {LABELS.CONNECT_LABEL}
+      Connect Wallet
     </Dropdown.Button>
   );
 };

@@ -4,7 +4,10 @@ import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { useConnection } from '../../contexts/connection';
 import { useWallet } from '../../contexts/wallet';
 import { sleep } from '../../utils/utils';
-// const IPFS = require('ipfs-core');
+
+import styled from 'styled-components/macro';
+import { colors, FlexRow } from '../../styles';
+//import NFTS from '../HomePage/NFTS';
 // import { listMarket } from '../utils/send';
 // import { CustomMarketInfo, MarketInfo } from '../utils/types';
 // import { getMarketInfos, useCustomMarkets, useMarket } from '../utils/markets';
@@ -18,27 +21,31 @@ import { sleep } from '../../utils/utils';
 const key = undefined;
 
 export const CreateNFT = () => {
-  const [name, setName] = useState<string>('');
-  const [file, setFile] = useState<any>();
-  const [imgPreview, setImgPreview] = useState<string>();
+  const [name, setName] = useState('');
+  const [file, setFile] = useState();
+  const [price, setPrice] = useState('');
+  const [imgPreview, setImgPreview] = useState();
 
   const connection = useConnection();
   const { wallet } = useWallet();
 
-  const handleFileChange = (event: any) => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
     const url = URL.createObjectURL(file);
     setFile(file);
     setImgPreview(url);
   };
 
-  const onChangeName = (e: any) => {
+  const onChangeName = (e) => {
     setName(e.target.value);
   };
 
-  const submitNftForm = async (e: { preventDefault: () => void }) => {
+  const onChangePrice = (e) => {
+    setPrice(e.target.value);
+  };
+
+  const submitNftForm = async (e) => {
     e.preventDefault();
-    //const ipfs = await IPFS.create();
 
     // First we mint a token
     const mintAccount = new Account([
@@ -126,7 +133,7 @@ export const CreateNFT = () => {
 
     console.log(`CREATING ACCOUNT`);
     console.log(wallet);
-    let newAccount1 = await token.createAccount(wallet!.publicKey!);
+    let newAccount1 = await token.createAccount(wallet.publicKey);
 
     await sleep(2000);
 
@@ -142,12 +149,16 @@ export const CreateNFT = () => {
       //console.log(`Image upload successful, ipfs: ${cid}`);
 
       const metadata = {
-        name,
-        imageSkylink: 'HELLO',
-        owner: wallet!.publicKey!.toString(),
+        title: name,
+        image: imgPreview,
+        price: price,
+        owner: wallet.publicKey.toString(),
         timestamp: Date.now(),
         tokenPublicKey: token.publicKey.toString(),
+        id: 9,
       };
+
+      //await addNFT(metadata);
 
       //Convert JSON Array to string.
       var json = JSON.stringify(metadata);
@@ -168,28 +179,80 @@ export const CreateNFT = () => {
   };
 
   return (
-    <form onSubmit={submitNftForm}>
-      <h5>Step 2 - Create your NFT</h5>
-      <input
-        type='text'
-        style={{ width: 250 }}
-        placeholder='Name it'
-        value={name}
-        onChange={onChangeName}
-      />
-      <input
-        type='file'
-        style={{ marginTop: 25, width: 250 }}
-        onChange={handleFileChange}
-      />
-      <button type='submit' style={{ marginLeft: 15, marginTop: 25 }}>
-        Create NFT
-      </button>
-      <div style={{ marginTop: 10 }}>
-        {imgPreview && (
-          <img alt='Preview' src={imgPreview} style={{ border: 'none' }} />
-        )}
-      </div>
-    </form>
+    <MintingContainer>
+      <Title>CREATE A SINGLE COLLECTIBLE</Title>
+      <form onSubmit={submitNftForm}>
+        <SubHeading>
+          ✍Title
+          <input
+            type='text'
+            style={{ width: 250 }}
+            placeholder='Name it'
+            value={name}
+            onChange={onChangeName}
+          />
+        </SubHeading>
+        <SubHeading>
+          Upload A File
+          <input
+            type='file'
+            style={{ marginTop: 25, width: 250 }}
+            onChange={handleFileChange}
+          />
+        </SubHeading>
+        <SubHeading>Pricing Options</SubHeading>
+        <SubHeading>
+          🤑 Price
+          <input
+            type='text'
+            style={{ width: 250 }}
+            placeholder='Sale Price'
+            value={price}
+            onChange={onChangePrice}
+          />
+        </SubHeading>
+        <FormNote>SERVICE FEE: 2.5%</FormNote>
+        <Button type='submit'> Create NFT </Button>
+
+        <div style={{ marginTop: 10 }}>
+          {imgPreview && (
+            <img alt='Preview' src={imgPreview} style={{ border: 'none' }} />
+          )}
+        </div>
+      </form>
+    </MintingContainer>
   );
 };
+
+const MintingContainer = styled.div`
+  ${'' /* position: fixed; */}
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+`;
+
+const Title = styled.h1`
+  color: ${colors.white};
+  font-weight: 1000;
+`;
+
+const SubHeading = styled.h2`
+  color: ${colors.white};
+  font-weight: 500;
+`;
+
+const Button = styled.button`
+  color: ${colors.white};
+  background-color: ${colors.buttonPrimary};
+`;
+
+const TextForm = styled.input`
+  height: 10px;
+  width: 50vw;
+`;
+
+const FormNote = styled.p`
+  color: ${colors.white};
+  font-size: 10px;
+  font-weight: 500;
+`;
